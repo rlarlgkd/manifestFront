@@ -16,11 +16,11 @@ node {
                         sh "git config user.name Kihang Kim"
                         //sh "git switch master"
                         sh "cat deployment.yaml"
-                        sh "sed -i 's+rlarlgkd/fm3back.*+rlarlgkd/fm3back:${DOCKERTAG}+g' deployment.yaml"
+                        sh "sed -i 's+rlarlgkd/fm3front.*+rlarlgkd/fm3front:${DOCKERTAG}+g' deployment.yaml"
                         sh "cat deployment.yaml"
                         sh "git add ."
                         sh "git commit -m 'Done by Jenkins Job changemanifest: ${env.BUILD_NUMBER}'"
-                        sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/kubernetesmanifest.git HEAD:main"
+                        sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/manifestfront.git HEAD:main"
       }
     }
   }
