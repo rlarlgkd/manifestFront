@@ -18,7 +18,7 @@ spec:
         app: reactdemo
     spec:
       containers:
-      - image: rlarlgkd/fm3front:1
+      - image: rlarlgkd/fm3front:21
         name: reactdemo
         resources: {}
 status: {}
