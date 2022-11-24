@@ -1,38 +1,48 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
+  name: app-front
   labels:
-    app: reactdemo
-  name: reactdemo
+    app: app-front
 spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  minReadySeconds: 20
   replicas: 3
   selector:
     matchLabels:
-      app: reactdemo
-  strategy: {}
+      app: app-front
+      tier: front
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        app: reactdemo
+        app: app-front
+        tier: front
     spec:
+      affinity:
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 80
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: tier
+                  operator: In
+                  values:
+                  - back
+              topologyKey: "kubernetes.io/hostname"
       containers:
-      - image: rlarlgkd/fm3front:21
-        name: reactdemo
-        resources: {}
-status: {}
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: lb-service
-  labels:
-    app: lb-service
-spec:
-  type: LoadBalancer
-  ports:
-  - port: 1010
-    targetPort: 3000
-  selector:
-    app: reactdemo
+        - name: app-front
+          image: docker.io/rlarlgkd/fm3front:latest
+          resources:
+            requests:
+              cpu: 5m
+              memory: 50Mi
+            limits:
+              cpu: 50m
+              memory: 1000Mi
+          ports:
+          - containerPort: 3000
