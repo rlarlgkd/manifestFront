@@ -36,7 +36,7 @@ spec:
               topologyKey: "kubernetes.io/hostname"
       containers:
         - name: app-front
-          image: docker.io/rlarlgkd/fm3front:15
+          image: docker.io/rlarlgkd/fm3front:16
           resources:
             requests:
               cpu: 5m
